@@ -1,4 +1,4 @@
-std = "roblox"
+std = "testez"
 
 [lints]
 almost_swapped = "deny"
