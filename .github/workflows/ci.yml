@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: ["master", "dev"]
+  pull_request:
+    branches: ["master", "dev"]
+
+jobs:
+  install-tools:
+    name: Install tools
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Rokit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          curl -L https://github.com/rojo-rbx/rokit/releases/download/v1.2.0/rokit-1.2.0-linux-x86_64.zip -o rokit.zip
+          unzip rokit.zip
+          mv rokit /usr/local/bin
+          rokit authenticate github --token $GITHUB_TOKEN
+          rokit install --no-trust-check
+      - name: Cache Rokit tools
+        uses: actions/cache@v3
+        with:
+          path: ~/.rokit
+          key: tools-${{ hashFiles('rokit.toml') }}
+
+  linting:
+    name: Lint with Selene
+    runs-on: ubuntu-latest
+    needs: [install-tools]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Restore cached Rokit tools
+        uses: actions/cache@v3
+        with:
+          path: ~/.rokit
+          key: tools-${{ hashFiles('rokit.toml') }}
+      - name: Lint
+        run: |
+          set -e
+          ~/.rokit/bin/selene --config .selene.toml src
+
+  formatting:
+    name: Format with StyLua    
+    runs-on: ubuntu-latest
+    needs: [install-tools]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Restore cached Rokit tools
+        uses: actions/cache@v3
+        with:
+          path: ~/.rokit
+          key: tools-${{ hashFiles('rokit.toml') }}
+      - name: Check format
+        run: |
+          set -e
+          ~/.rokit/bin/stylua --check src
+
+  tests:
+    name: Run tests with Open Cloud API
+    runs-on: ubuntu-latest
+    needs: [install-tools]
+    concurrency:
+      group: luau-execution
+      cancel-in-progress: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Restore cached Rokit tools
+        uses: actions/cache@v3
+        with:
+          path: ~/.rokit
+          key: tools-${{ hashFiles('rokit.toml') }}
+      - name: Install Wally
+        run: |
+          ~/.rokit/bin/wally install
+      - name: Run tests script
+        env:
+          ROBLOX_API_KEY: ${{ secrets.ROBLOX_API_KEY }}
+          ROBLOX_TEST_UNIVERSE_ID: ${{ vars.ROBLOX_TEST_UNIVERSE_ID }}
+          ROBLOX_TEST_PLACE_ID: ${{ vars.ROBLOX_TEST_PLACE_ID }}
+        run: |
+          set -e
+          ~/.rokit/bin/rojo build test.project.json --output test.rbxl
+          ~/.rokit/bin/lune run cloud/execute.luau test.rbxl $ROBLOX_API_KEY $ROBLOX_TEST_UNIVERSE_ID $ROBLOX_TEST_PLACE_ID
+          rm test.rbxl

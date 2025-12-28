@@ -1,0 +1,14 @@
+# Rojo
+sourcemap.json
+
+# Wally
+DevPackages
+Packages
+
+# Act
+.actrc
+.vars
+.secrets
+
+# LSP
+.types

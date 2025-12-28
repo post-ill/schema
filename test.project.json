@@ -1,0 +1,16 @@
+{
+    "name": "automated",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "$path": "src",
+
+            "DevPackages": {
+                "$path": "DevPackages"
+            }
+        },
+        "TestService": {
+            "$path": "tests"
+        }
+    }
+}
