@@ -3,8 +3,8 @@
 registry = "test"
 
 [[package]]
-name = "post/automated"
-version = "0.1.0"
+name = "post-ill/schema"
+version = "1.0.0"
 dependencies = [["testez", "roblox/testez@0.4.1"]]
 
 [[package]]
