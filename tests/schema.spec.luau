@@ -1,5 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local s = require(ReplicatedStorage.schema)
+local s = require(ReplicatedStorage.Shared.schema)
 
 return function()
 	describe("primitives", function()

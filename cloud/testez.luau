@@ -1,8 +1,8 @@
 --!nonstrict
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local testez = require(ReplicatedStorage.DevPackages.testez)
+local TestEZ = require(ReplicatedStorage.Shared.Dependencies.Test.TestEZ)
 
-local results = testez.TestBootstrap:run({
+local results = TestEZ.TestBootstrap:run({
 	game:GetService("TestService"),
 })
 
