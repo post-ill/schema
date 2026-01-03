@@ -49,7 +49,7 @@ print(`Schema error: {err}`)
 |-----------------|-----------------------------------------------------------------------------|-------------------|
 | `s.min(n)`      | numbers, strings or tables with a minimum size of `n` (inclusive)           | `s.min(5)`        |
 | `s.max(n)`      | numbers, strings or tables with a maximum size of `n` (inclusive)           | `s.max(10)`       |
-| `s.range(n, m)` | numbers, strings or tables with a size between `n` and `m` (both inclusive) | `s.range(5, 10)`   |
+| `s.range(n, m)` | numbers, strings or tables with a size between `n` and `m` (both inclusive) | `s.range(5, 10)`  |
 | `s.size(n)`     | strings or tables with a size of `n`                                        | `s.size(10)`      |
 | `s.unsigned`    | numbers greater or equal to `0`                                             | `s.unsigned(0.5)` |
 
@@ -59,7 +59,7 @@ print(`Schema error: {err}`)
 |------------------------|----------------------------------------------------------------------|-----------------------------------------------------------|
 | `s.array(t)`           | tables with consecutive integer keys whose elements match `t` schema | `s.array(s.integer)`                                      |
 | `s.set(t)`             | values matching `s.array(t)` schema with no duplicates               | `s.set(s.string)`                                         |
-| `s.map(kt, vt)`        | regular tables whose keys matches `kt` schema and values `vt` schema | `s.map(5, 10)`                                            |
+| `s.map(kt, vt)`        | regular tables whose keys matches `kt` schema and values `vt` schema | `s.map(s.string, s.boolean)`                              |
 | `s.object(o)`          | tables matching at least all `o` keys and values                     | `s.object({ id = s.integer, vip = s.boolean })`           |
 | `s.shape(o)`           | tables matching `s.object(o)` schema containing only `o` entries     | `s.shape({ key = s.string, value = s.number })`           |
 | `s.union(...t)`        | values matching at least one of the `...t` schemas                   | `s.union(s.literal("r"), s.literal("g"), s.literal("b"))` |
