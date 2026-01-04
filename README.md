@@ -75,6 +75,28 @@ print(`Schema error: {err}`)
 | `s.instance(c)`  | instances that match or inherit `c` class | `s.instance("GuiObject")`      |
 | `s.class(c)`     | instance with class `c`                   | `s.class("Script")`            |
 
+### Future plans
+
+*schema* ended up looking more like [t](https://github.com/osyrisrblx/t/) than I expected. This is not a bad
+thing at all, it's just something that happened. In a principle, it was supposed to have mixed explicit and
+implicit typing (by explicit types meaning literals) using a builder `schema.build` function for instance.
+
+```luau
+local builtType = s.build({ -- This being a shape
+   primitiveLiteral = 3.14,
+   tuple = { s.number, s.integer, s.string },
+   array = { s.number },
+   set = { s.unique(s.number) }, -- Not really a thing, at that point just use s.set(type) lol
+   map = { [s.string] = s.boolean },
+   enum = Enum.HumanoidRigType,
+   object = s.object({}) -- Objects could only be specified through this way
+})
+```
+
+For the sake of consistency, combinators should also have to use this build function internally for the receiving types. At the
+time **I decided to keep literals out**. If the library gets to somewhere I could maybe start thinking more about adding it
+as a v2.
+
 ## Issues
 
 Feel free to open an [issue](https://github.com/post-ill/schema/issues/new) if you find out that the library
