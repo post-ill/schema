@@ -75,7 +75,44 @@ print(`Schema error: {err}`)
 | `s.instance(c)`  | instances that match or inherit `c` class | `s.instance("GuiObject")`      |
 | `s.class(c)`     | instance with class `c`                   | `s.class("Script")`            |
 
-### Future plans
+## Complex examples
+
+```luau
+-- Number arrays with a max. size of 10 elements
+s.intersection(s.array(s.number), s.max(10))
+
+-- Uniquely identified shape based on its 'id' field
+local shape = s.shape({
+   id = s.integer,
+   name = s.string,
+   interests = s.set(s.string)
+})
+local function identity(value)
+   return value.id
+end
+s.intersection(s.set(shape, identity), s.min(5))
+
+-- Maps with combined key
+s.map(s.intersection(s.string, s.size(1)), s.number)
+
+-- Tagged union
+s.union(
+   s.shape({
+      type = s.literal("red"),
+      hex = s.string
+   }),
+   s.shape({
+      type = s.literal("green"),
+      hex = s.string
+   }),
+   s.shape({
+      type = s.literal("blue"),
+      hex = s.string
+   })
+)
+```
+
+## Future plans
 
 *schema* ended up looking more like [t](https://github.com/osyrisrblx/t/) than I expected. This is not a bad
 thing at all, it's just something that happened. In a principle, it was supposed to have mixed explicit and
