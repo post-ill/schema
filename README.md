@@ -55,16 +55,16 @@ print(`Schema error: {err}`)
 
 ### 3. Combinators
 
-| type                   | accepts                                                              | example                                                   |
-|------------------------|----------------------------------------------------------------------|-----------------------------------------------------------|
-| `s.array(t)`           | tables with consecutive integer keys whose elements match `t` schema | `s.array(s.integer)`                                      |
-| `s.set(t)`             | values matching `s.array(t)` schema with no duplicates               | `s.set(s.string)`                                         |
-| `s.map(kt, vt)`        | regular tables whose keys matches `kt` schema and values `vt` schema | `s.map(s.string, s.boolean)`                              |
-| `s.object(o)`          | tables matching at least all `o` keys and values                     | `s.object({ id = s.integer, vip = s.boolean })`           |
-| `s.shape(o)`           | tables matching `s.object(o)` schema containing only `o` entries     | `s.shape({ key = s.string, value = s.number })`           |
-| `s.union(...t)`        | values matching at least one of the `...t` schemas                   | `s.union(s.literal("r"), s.literal("g"), s.literal("b"))` |
-| `s.intersection(...t)` | values matching all `...t` schemas                                   | `s.intersection(s.integer, s.unsigned)`                   |
-| `s.optional(t)`        | values matching `t` or `nil`                                         | `s.optional(s.string)`                                    |
+| type                   | accepts                                                                                                                                                                                                                          | example                                                   |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| `s.array(t)`           | tables with consecutive integer keys whose elements match `t` schema                                                                                                                                                             | `s.array(s.integer)`                                      |
+| `s.set(t, i?)`         | values matching `s.array(t)` schema with no duplicates based on `i` identity function. The callback defaults to `function(value) return value end`. Identity function allows storing complex objects while associating an unique key | `s.set(s.string)`                                         |
+| `s.map(kt, vt)`        | regular tables whose keys matches `kt` schema and values `vt` schema                                                                                                                                                             | `s.map(s.string, s.boolean)`                              |
+| `s.object(o)`          | tables matching at least all `o` keys and values                                                                                                                                                                                 | `s.object({ id = s.integer, vip = s.boolean })`           |
+| `s.shape(o)`           | tables matching `s.object(o)` schema containing only `o` entries                                                                                                                                                                 | `s.shape({ key = s.string, value = s.number })`           |
+| `s.union(...t)`        | values matching at least one of the `...t` schemas                                                                                                                                                                               | `s.union(s.literal("r"), s.literal("g"), s.literal("b"))` |
+| `s.intersection(...t)` | values matching all `...t` schemas                                                                                                                                                                                               | `s.intersection(s.integer, s.unsigned)`                   |
+| `s.optional(t)`        | values matching `t` or `nil`                                                                                                                                                                                                     | `s.optional(s.string)`                                    |
 
 ### 4. Roblox types
 
