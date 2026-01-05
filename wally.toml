@@ -1,7 +1,7 @@
 [package]
 name = "post-ill/schema"
 description = "Minimal, highly composable runtime type checker for Roblox."
-version = "1.0.0"
+version = "1.0.1"
 license = "Unlicense"
 repository = "https://github.com/post-ill/schema"
 
