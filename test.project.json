@@ -1,12 +1,19 @@
 {
-    "name": "automated",
+    "name": "schema",
     "tree": {
         "$className": "DataModel",
         "ReplicatedStorage": {
-            "$path": "src",
-
-            "DevPackages": {
-                "$path": "DevPackages"
+            "Shared": {
+                "$className": "Folder",
+                "schema": {
+                    "$path": "src/schema.luau"
+                },
+                "Dependencies": {
+                    "$className": "Folder",
+                    "Test": {
+                        "$path": "DevPackages"
+                    }
+                }
             }
         },
         "TestService": {

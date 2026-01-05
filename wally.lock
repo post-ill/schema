@@ -5,7 +5,7 @@ registry = "test"
 [[package]]
 name = "post-ill/schema"
 version = "1.0.0"
-dependencies = [["testez", "roblox/testez@0.4.1"]]
+dependencies = [["TestEZ", "roblox/testez@0.4.1"]]
 
 [[package]]
 name = "roblox/testez"

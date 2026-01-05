@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - 1.0.0 release documentation improvements
+- Wally package missing details and configuration
+
+### Fixed
+
+- Wally package installation and usage
 
 ## [1.0.0] - 2025-12-30
 

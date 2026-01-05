@@ -1,8 +1,21 @@
 [package]
 name = "post-ill/schema"
+description = "Minimal, highly composable runtime type checker for Roblox."
 version = "1.0.0"
+license = "Unlicense"
+repository = "https://github.com/post-ill/schema"
+
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 
+exclude = ["*"]
+include = [
+  "default.project.json",
+  "README.md",
+  "src",
+  "src/**",
+  "wally.toml"
+]
+
 [dev-dependencies]
-testez = "roblox/testez@0.4.1"
+TestEZ = "roblox/testez@0.4.1"
