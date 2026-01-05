@@ -7,18 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+Standby.
+
+## [1.0.1] - 2026-01-05
+
 ### Added
 
-- 1.0.0 release documentation improvements
-- Wally package missing details and configuration
+- 1.0.0 release documentation improvements ([#4](https://github.com/post-ill/schema/pull/4))
+- Wally package missing details and configuration ([#5](https://github.com/post-ill/schema/pull/5))
 
 ### Fixed
 
-- Wally package installation and usage
+- Wally package installation and usage ([#5](https://github.com/post-ill/schema/pull/5))
 
-## Removed
+### Removed
 
-- Unnecessary past OOP mechanism
+- Unnecessary past OOP mechanism ([#6](https://github.com/post-ill/schema/pull/6))
 
 ## [1.0.0] - 2025-12-30
 
