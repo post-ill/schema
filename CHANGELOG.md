@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Wally package installation and usage
 
+## Removed
+
+- Unnecessary past OOP mechanism
+
 ## [1.0.0] - 2025-12-30
 
 ### Added
