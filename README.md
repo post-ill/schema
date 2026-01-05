@@ -49,22 +49,22 @@ print(`Schema error: {err}`)
 |-----------------|-----------------------------------------------------------------------------|-------------------|
 | `s.min(n)`      | numbers, strings or tables with a minimum size of `n` (inclusive)           | `s.min(5)`        |
 | `s.max(n)`      | numbers, strings or tables with a maximum size of `n` (inclusive)           | `s.max(10)`       |
-| `s.range(n, m)` | numbers, strings or tables with a size between `n` and `m` (both inclusive) | `s.range(5, 10)`   |
+| `s.range(n, m)` | numbers, strings or tables with a size between `n` and `m` (both inclusive) | `s.range(5, 10)`  |
 | `s.size(n)`     | strings or tables with a size of `n`                                        | `s.size(10)`      |
 | `s.unsigned`    | numbers greater or equal to `0`                                             | `s.unsigned(0.5)` |
 
 ### 3. Combinators
 
-| type                   | accepts                                                              | example                                                   |
-|------------------------|----------------------------------------------------------------------|-----------------------------------------------------------|
-| `s.array(t)`           | tables with consecutive integer keys whose elements match `t` schema | `s.array(s.integer)`                                      |
-| `s.set(t)`             | values matching `s.array(t)` schema with no duplicates               | `s.set(s.string)`                                         |
-| `s.map(kt, vt)`        | regular tables whose keys matches `kt` schema and values `vt` schema | `s.map(5, 10)`                                            |
-| `s.object(o)`          | tables matching at least all `o` keys and values                     | `s.object({ id = s.integer, vip = s.boolean })`           |
-| `s.shape(o)`           | tables matching `s.object(o)` schema containing only `o` entries     | `s.shape({ key = s.string, value = s.number })`           |
-| `s.union(...t)`        | values matching at least one of the `...t` schemas                   | `s.union(s.literal("r"), s.literal("g"), s.literal("b"))` |
-| `s.intersection(...t)` | values matching all `...t` schemas                                   | `s.intersection(s.integer, s.unsigned)`                   |
-| `s.optional(t)`        | values matching `t` or `nil`                                         | `s.optional(s.string)`                                    |
+| type                   | accepts                                                                                                                                                                                                                          | example                                                   |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| `s.array(t)`           | tables with consecutive integer keys whose elements match `t` schema                                                                                                                                                             | `s.array(s.integer)`                                      |
+| `s.set(t, i?)`         | values matching `s.array(t)` schema with no duplicates based on `i` identity function. The callback defaults to `function(value) return value end`. Identity function allows storing complex objects while associating an unique key | `s.set(s.string)`                                         |
+| `s.map(kt, vt)`        | regular tables whose keys matches `kt` schema and values `vt` schema                                                                                                                                                             | `s.map(s.string, s.boolean)`                              |
+| `s.object(o)`          | tables matching at least all `o` keys and values                                                                                                                                                                                 | `s.object({ id = s.integer, vip = s.boolean })`           |
+| `s.shape(o)`           | tables matching `s.object(o)` schema containing only `o` entries                                                                                                                                                                 | `s.shape({ key = s.string, value = s.number })`           |
+| `s.union(...t)`        | values matching at least one of the `...t` schemas                                                                                                                                                                               | `s.union(s.literal("r"), s.literal("g"), s.literal("b"))` |
+| `s.intersection(...t)` | values matching all `...t` schemas                                                                                                                                                                                               | `s.intersection(s.integer, s.unsigned)`                   |
+| `s.optional(t)`        | values matching `t` or `nil`                                                                                                                                                                                                     | `s.optional(s.string)`                                    |
 
 ### 4. Roblox types
 
@@ -74,6 +74,65 @@ print(`Schema error: {err}`)
 | `s.dataType(dt)` | data objects matching `dt`                | `s.dataType("Vector3")`        |
 | `s.instance(c)`  | instances that match or inherit `c` class | `s.instance("GuiObject")`      |
 | `s.class(c)`     | instance with class `c`                   | `s.class("Script")`            |
+
+## Complex examples
+
+```luau
+-- Number arrays with a max. size of 10 elements
+s.intersection(s.array(s.number), s.max(10))
+
+-- Uniquely identified shape based on its 'id' field
+local shape = s.shape({
+   id = s.integer,
+   name = s.string,
+   interests = s.set(s.string)
+})
+local function identity(value)
+   return value.id
+end
+s.intersection(s.set(shape, identity), s.min(5))
+
+-- Maps with combined key
+s.map(s.intersection(s.string, s.size(1)), s.number)
+
+-- Tagged union
+s.union(
+   s.shape({
+      type = s.literal("red"),
+      hex = s.string
+   }),
+   s.shape({
+      type = s.literal("green"),
+      hex = s.string
+   }),
+   s.shape({
+      type = s.literal("blue"),
+      hex = s.string
+   })
+)
+```
+
+## Future plans
+
+*schema* ended up looking more like [t](https://github.com/osyrisrblx/t/) than I expected. This is not a bad
+thing at all, it's just something that happened. In a principle, it was supposed to have mixed explicit and
+implicit typing (by explicit types meaning literals) using a builder `schema.build` function for instance.
+
+```luau
+local builtType = s.build({ -- This being a shape
+   primitiveLiteral = 3.14,
+   tuple = { s.number, s.integer, s.string },
+   array = { s.number },
+   set = { s.unique(s.number) }, -- Not really a thing, at that point just use s.set(type) lol
+   map = { [s.string] = s.boolean },
+   enum = Enum.HumanoidRigType,
+   object = s.object({}) -- Objects could only be specified through this way
+})
+```
+
+For the sake of consistency, combinators should also have to use this build function internally for the receiving types. At the
+time **I decided to keep literals out**. If the library gets to somewhere I could maybe start thinking more about adding it
+as a v2.
 
 ## Issues
 

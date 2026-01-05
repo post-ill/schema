@@ -31,8 +31,7 @@ type S = {
 	class: (name: string) -> Schema,
 }
 
-local s = {}
-s.__index = s
+local s = {} :: S
 
 -- Primitives
 function s.boolean(data)
@@ -311,4 +310,4 @@ function s.class(name)
 	end
 end
 
-return s :: S
+return s
